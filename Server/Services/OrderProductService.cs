@@ -13,26 +13,50 @@ namespace Server.Services
             dbContextFactory = dbContext;
         }
 
-        public List<OrderProduct> GetOrdersProducts(long orderId)
+        public List<OrderProductDTO> GetOrderProducts(long orderId)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            if (!dbContext.Orders.Any())
+            if (!dbContext.Orders.Any(o => o.Id == orderId))
             {
                 return null;
             }
-            List<OrderProduct> ordersList = dbContext.OrdersProducts
+            List<OrderProductDTO> orderProductsList = new List<OrderProductDTO>();
+            foreach(var orderProduct in dbContext.OrdersProducts
                 .Where(op => op.OrderId == orderId)
-                .OrderBy(o => o.Id).ToList();
+                .OrderBy(o => o.Id).ToList())
+            {
+                OrderProductDTO _orderProductDTO = new OrderProductDTO(orderProduct, orderProduct.Product.ProductName);
+                orderProductsList.Add(_orderProductDTO);
+            }
 
-            return ordersList;
+            return orderProductsList;
         }
 
-        public OrderProductDTO AddOrderProduct(OrderCreateDTO orderCreateDTO)
+        public OrderProductDTO AddOrderProduct(OrderProductCreateDTO orderProductCreateDTO)
         {
+            using var dbContext = dbContextFactory.CreateDbContext();
 
+            if(!dbContext.Orders.Any(o => o.Id == orderProductCreateDTO.OrderId))
+            {
+                return null;
+            }
+            if (!dbContext.Products.Any(p => p.Id == orderProductCreateDTO.ProductId))
+            {
+                return null;
+            }
+
+            OrderProduct newOrderProduct = new OrderProduct();
+            newOrderProduct.OrderId = orderProductCreateDTO.OrderId;
+            newOrderProduct.ProductId = orderProductCreateDTO.ProductId;
+            newOrderProduct.ProductCount = orderProductCreateDTO.ProductCount;
+            newOrderProduct.CreatorId = 1;
+            newOrderProduct.CreationDate = DateTime.Now;
+
+            dbContext.OrdersProducts.Add(newOrderProduct);
+            dbContext.SaveChanges();
         }
 
-        public OrderProductDTO EditOrderProducts(long orderId, long productId, OrderProductDTO orderDTO)
+        public OrderProductDTO EditOrderProducts(long orderProductId, int productsCount)
         {
 
         }
@@ -40,7 +64,9 @@ namespace Server.Services
         public void DeleteOrderProduct(long orderId, long productId)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            if (!dbContext.OrdersProducts.Where(op => op.OrderId == orderId && op => op.OrderId == orderId).Any())
+            //if (!dbContext.OrdersProducts.Any(op => op.OrderId == orderId && op.OrderId == orderId))
+            OrderProduct deletableOrderProduct = dbContext.OrdersProducts.FirstOrDefault(op => op.OrderId == orderId && op.OrderId == orderId);
+            dbContext.OrdersProducts.Remove(deletableOrderProduct;
         }
     }
 }

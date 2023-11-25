@@ -10,17 +10,15 @@ namespace Shared
     public class OrderProductDTO
     {
         public long Id { get; set; }
-        public long OrderId { get; set; }
-        public long ProductId { get; set; }
+        public string ProductName { get; set; }
         public long ProductCount { get; set; }
         public long? CreatorId { get; set; }
         public DateTime CreationDate { get; set; }
         public OrderProductDTO() { }
-        public OrderProductDTO(OrderProduct orderProduct) 
+        public OrderProductDTO(OrderProduct orderProduct, string productName) 
         {
             Id = orderProduct.Id;
-            OrderId = orderProduct.OrderId;
-            ProductId = orderProduct.ProductId;
+            ProductName = productName;
             ProductCount = orderProduct.ProductCount;
             CreatorId = orderProduct.CreatorId;
             CreationDate = orderProduct.CreationDate;

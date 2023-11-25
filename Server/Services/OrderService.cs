@@ -36,6 +36,7 @@ namespace Server.Services
             Order newOrder = new Order();
             newOrder.Customer = orderCreateDTO.Customer;
             //newOrder.OrderNumber = String.Join("_", $"{DateTime.Now.ToString("yy")}", $"{DateTime.Now.ToString("MM")}", $"{}");
+            //CreatorId
             newOrder.CreationDate = DateTime.Now;
             dbContext.Orders.Add(newOrder);
             dbContext.SaveChanges();
