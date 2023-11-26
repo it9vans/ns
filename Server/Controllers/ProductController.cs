@@ -28,7 +28,7 @@ namespace Server.Controllers
 
         [HttpGet]
         [Route("/products/check")]
-        public ActionResult<int> GetCheck()
+        public ActionResult<int> PostProduct()
         {
             var result = _IProductService.GetProducts();
             int check = result.Count();
