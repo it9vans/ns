@@ -38,6 +38,7 @@ if (app.Environment.IsDevelopment())
     app.UseWebAssemblyDebugging();
 };
 
+//app.UseCors();
 
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();

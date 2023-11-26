@@ -9,28 +9,28 @@ namespace Server.Controllers
 {
 
     [ApiController]
-    public class ProductController : Controller
+    [Route("[controller]")]
+    public class ProductsController : ControllerBase
     {
-        ////[Route("products")]
-        ////[HttpGet]
+        //[Route("products")]
+        //[HttpGet]
         IProductService _productService;
 
-        public ProductController(ProductService productService)
+        public ProductsController(ProductService productService)
         {
             _productService = productService;
         }
 
         [HttpGet]
-        [Route("/products")]
-        public ActionResult<List<ProductDTO>> GetProductListWithCategory()
+
+        public ActionResult<List<ProductDTO>> Index()
         {
             var result = _productService.GetProducts();
             return Ok(result);
         }
 
-        [Route("/check")]
         [HttpGet]
-        //[Route("/check")]
+        [Route("/check")]
         public ActionResult<int> GetCheck()
         {
             var result = _productService.GetProducts();
