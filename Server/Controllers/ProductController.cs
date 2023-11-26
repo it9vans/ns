@@ -8,34 +8,31 @@ using Shared;
 namespace Server.Controllers
 {
 
-    [ApiController]
-    [Route("[controller]")]
-    public class ProductsController : ControllerBase
-    {
-        //[Route("products")]
-        //[HttpGet]
-        IProductService _productService;
 
-        public ProductsController(ProductService productService)
+    public class ProductController : Controller
+    {
+        IProductService _IProductService;
+
+        public ProductController(IProductService iProductService)
         {
-            _productService = productService;
+            _IProductService = iProductService;
         }
 
         [HttpGet]
-
+        [Route("/products")]
         public ActionResult<List<ProductDTO>> Index()
         {
-            var result = _productService.GetProducts();
+            var result = _IProductService.GetProducts();
             return Ok(result);
         }
 
         [HttpGet]
-        [Route("/check")]
+        [Route("/products/check")]
         public ActionResult<int> GetCheck()
         {
-            var result = _productService.GetProducts();
+            var result = _IProductService.GetProducts();
             int check = result.Count();
-            return Ok(2);
+            return Ok(check);
         }
     }
 }

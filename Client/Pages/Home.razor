@@ -6,7 +6,7 @@
 
 
 <h2>@productsList.Count()</h2>
-@* <h2>@ProductsCount</h2> *@
+<h2>@ProductsCount</h2>
 Welcome to your new app.
 
 
@@ -25,8 +25,8 @@ Welcome to your new app.
     {
 
         var response = await Http.GetAsync($"/products/");
-        productsList = await Http.GetFromJsonAsync<List<ProductDTO>>($"https://localhost:7035/Products");
-        // ProductsCount = await Http.GetFromJsonAsync<int>($"/check");
+        productsList = await Http.GetFromJsonAsync<List<ProductDTO>>($"/products");
+        ProductsCount = await Http.GetFromJsonAsync<int>($"/products/check");
 
     }
 }

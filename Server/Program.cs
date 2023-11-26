@@ -11,13 +11,14 @@ using Server.Services.ServiceInterfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorPages();
+
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 
 builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer());
 
-builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
 
@@ -47,11 +48,10 @@ app.UseRouting();
 
 app.UseBlazorFrameworkFiles();
 
-app.UseAuthorization();
+
 
 app.MapRazorPages();
 app.MapControllers();
-
 app.MapFallbackToFile("index.html");
 
 app.Run();

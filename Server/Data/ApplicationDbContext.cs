@@ -18,7 +18,7 @@ namespace Server.Data
         {
             base.OnConfiguring(optionsBuilder);
 
-            optionsBuilder.UseSqlServer(@"Server=localhost\SQLEXPRESS;Database=svk;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer(@"Server=localhost\SQLEXPRESS;Database=svk;Trusted_Connection=True;TrustServerCertificate=True;");
         }
     }
 }

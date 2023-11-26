@@ -23,7 +23,7 @@ namespace Server.Services
             //    return null;
             //}
             List<ProductDTO> productsList = new List<ProductDTO>();
-            foreach(var product in dbContext.Products)
+            foreach(Product product in dbContext.Products.ToList())
             {
                 ProductDTO productDTO = new ProductDTO(product);
                 productsList.Add(productDTO);
