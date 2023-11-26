@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 using Server.Data;
 using Server.Services.ServiceInterfaces;
 using Shared;
@@ -13,7 +14,7 @@ namespace Server.Services
             dbContextFactory = dbContext;
         }
         
-        public OrderDTO[] GetOrders()
+        public List<OrderDTO> GetOrders()
         {
             using var dbContext = dbContextFactory.CreateDbContext();
             if (!dbContext.Orders.Any())
@@ -27,10 +28,10 @@ namespace Server.Services
                 ordersList.Add(orderDTO);
             }
 
-            return ordersList.ToArray();
+            return ordersList;
         }
 
-        public OrderDTO AddOrder(OrderCreateDTO orderCreateDTO)
+        public bool AddOrder(OrderCreateDTO orderCreateDTO)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
             Order newOrder = new Order();
@@ -43,29 +44,34 @@ namespace Server.Services
 
             //createdOrder = dbContext.Orders.
             OrderDTO responseProduct = new OrderDTO(newOrder);
-            return responseProduct;
+            return true;
         }
 
-        public OrderDTO EditOrder(long id, OrderDTO orderDTO)
+        public bool EditOrder(long productId, OrderDTO orderDTO)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            if (!dbContext.Products.Any(p => p.Id == id))
+            if (!dbContext.Products.Any(p => p.Id == productId))
             {
-                return null;
+                return false;
             }
-            Order editableProduct = dbContext.Orders.First(p => p.Id == id);
+            Order editableProduct = dbContext.Orders.First(p => p.Id == productId);
             editableProduct.Customer = orderDTO.Customer;
             dbContext.SaveChanges();
-            OrderDTO responseOrder = new OrderDTO(dbContext.Orders.First(p => p.Id == id));
-            return responseOrder;
+            OrderDTO responseOrder = new OrderDTO(dbContext.Orders.First(p => p.Id == productId));
+            return true;
         }
 
-        public void DeleteOrder(long id)
+        public bool DeleteOrder(long orderId)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            Order deletableOrder = dbContext.Orders.First(p => p.Id == id);
+            if (!dbContext.Products.Any(p => p.Id == orderId))
+            {
+                return false;
+            }
+            Order deletableOrder = dbContext.Orders.First(p => p.Id == orderId);
             dbContext.Orders.Remove(deletableOrder);
             dbContext.SaveChanges();
+            return true;
         }
     }
 }

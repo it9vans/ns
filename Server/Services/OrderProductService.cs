@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Server.Data;
 using Shared;
@@ -32,41 +34,52 @@ namespace Server.Services
             return orderProductsList;
         }
 
-        public OrderProductDTO AddOrderProduct(OrderProductCreateDTO orderProductCreateDTO)
+        public bool AddOrderProduct(OrderProductCreateDTO orderProductCreateDTO)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
 
-            if(!dbContext.Orders.Any(o => o.Id == orderProductCreateDTO.OrderId))
+            if (!dbContext.OrdersProducts.Any(op => op.OrderId == orderProductCreateDTO.OrderId && op.ProductId == orderProductCreateDTO.ProductId))
             {
-                return null;
-            }
-            if (!dbContext.Products.Any(p => p.Id == orderProductCreateDTO.ProductId))
-            {
-                return null;
+                return false;
             }
 
             OrderProduct newOrderProduct = new OrderProduct();
             newOrderProduct.OrderId = orderProductCreateDTO.OrderId;
             newOrderProduct.ProductId = orderProductCreateDTO.ProductId;
-            newOrderProduct.ProductCount = orderProductCreateDTO.ProductCount;
+            newOrderProduct.ProductsCount = orderProductCreateDTO.ProductsCount;
             newOrderProduct.CreatorId = 1;
             newOrderProduct.CreationDate = DateTime.Now;
 
             dbContext.OrdersProducts.Add(newOrderProduct);
             dbContext.SaveChanges();
+            return true;
         }
 
-        public OrderProductDTO EditOrderProducts(long orderProductId, int productsCount)
-        {
-
-        }
-
-        public void DeleteOrderProduct(long orderId, long productId)
+        public bool EditOrderProducts(OrderProductEditDTO orderProductEditDTO)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            //if (!dbContext.OrdersProducts.Any(op => op.OrderId == orderId && op.OrderId == orderId))
-            OrderProduct deletableOrderProduct = dbContext.OrdersProducts.FirstOrDefault(op => op.OrderId == orderId && op.OrderId == orderId);
-            dbContext.OrdersProducts.Remove(deletableOrderProduct;
+            if (!dbContext.OrdersProducts.Any(op => op.OrderId == orderProductEditDTO.OrderId && op.ProductId == orderProductEditDTO.ProductId))
+            {
+                return false;
+            }
+            OrderProduct editableOrderProduct = dbContext.OrdersProducts.Find(orderProductEditDTO.Id);
+            editableOrderProduct.ProductsCount = orderProductEditDTO.ProductsCount;
+            dbContext.SaveChanges();
+            return true;
+        }
+
+        public bool DeleteOrderProduct(long orderId, long productId)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            if (!dbContext.OrdersProducts.Any(op => op.OrderId == orderId && op.ProductId == productId)) //!dbContext.Orders.Any(o => o.Id == orderId) || !dbContext.Products.Any(p => p.Id == productId
+            {
+                return false;
+            }
+            
+            OrderProduct deletableOrderProduct = dbContext.OrdersProducts.FirstOrDefault(op => op.OrderId == orderId && op.ProductId == productId);
+            dbContext.OrdersProducts.Remove(deletableOrderProduct);
+            dbContext.SaveChanges();
+            return true;
         }
     }
 }

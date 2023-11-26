@@ -18,7 +18,7 @@ namespace Server.Data
         {
             base.OnConfiguring(optionsBuilder);
 
-            optionsBuilder.UseSqlite($"Data source ={Path.Combine(Environment.CurrentDirectory, "SVKDB.db")}");
+            optionsBuilder.UseSqlServer(@"Server=localhost\SQLEXPRESS;Database=svk;Trusted_Connection=True;");
         }
     }
 }

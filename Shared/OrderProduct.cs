@@ -16,9 +16,8 @@ namespace Shared
         public long ProductId { get; set; }
         [ForeignKey("ProductId")]
         public Product Product { get; set; }
-        public long ProductCount { get; set; }
+        public long ProductsCount { get; set; }
         public long? CreatorId { get; set; }
-        
         public DateTime CreationDate { get; set; }
 
 

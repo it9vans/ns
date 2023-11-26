@@ -4,15 +4,18 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.HttpOverrides;
 using Server.Data;
 using Microsoft.EntityFrameworkCore;
+using Server.Services;
+using Server.Services.ServiceInterfaces;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlite());
+builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer());
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -32,13 +35,11 @@ if (!app.Environment.IsDevelopment())
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseWebAssemblyDebugging();
 };
 
 
-
-app.UseHttpsRedirection();
+app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -53,3 +54,4 @@ app.MapControllers();
 app.MapFallbackToFile("index.html");
 
 app.Run();
+Console.WriteLine("started");

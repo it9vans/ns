@@ -5,9 +5,9 @@ namespace Server.Services.ServiceInterfaces
 {
     public interface IProductService
     {
-        ProductDTO[] GetProducts();
-        ProductDTO AddProduct(ProductCreateDTO productCreateDTO);
-        ProductDTO EditProduct(long id, ProductDTO productDTO);
-        void DeleteProduct(long id);
+        List<ProductDTO> GetProducts();
+        bool AddProduct(ProductCreateDTO productCreateDTO);
+        bool EditProduct(long id, ProductDTO productDTO);
+        bool DeleteProduct(long id);
     }
 }

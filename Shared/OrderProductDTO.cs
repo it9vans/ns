@@ -11,7 +11,7 @@ namespace Shared
     {
         public long Id { get; set; }
         public string ProductName { get; set; }
-        public long ProductCount { get; set; }
+        public long ProductsCount { get; set; }
         public long? CreatorId { get; set; }
         public DateTime CreationDate { get; set; }
         public OrderProductDTO() { }
@@ -19,7 +19,7 @@ namespace Shared
         {
             Id = orderProduct.Id;
             ProductName = productName;
-            ProductCount = orderProduct.ProductCount;
+            ProductsCount = orderProduct.ProductsCount;
             CreatorId = orderProduct.CreatorId;
             CreationDate = orderProduct.CreationDate;
         }

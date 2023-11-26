@@ -4,9 +4,9 @@ namespace Server.Services.ServiceInterfaces
 {
     public interface IOrderService
     {
-        OrderDTO[] GetOrders();
-        OrderDTO AddOrder(OrderCreateDTO orderCreateDTO);
-        OrderDTO EditOrder(long id, OrderDTO orderDTO);
-        void DeleteOrder(long id);
+        List<OrderDTO> GetOrders();
+        bool AddOrder(OrderCreateDTO orderCreateDTO);
+        bool EditOrder(long id, OrderDTO orderDTO);
+        bool DeleteOrder(long id);
     }
 }
